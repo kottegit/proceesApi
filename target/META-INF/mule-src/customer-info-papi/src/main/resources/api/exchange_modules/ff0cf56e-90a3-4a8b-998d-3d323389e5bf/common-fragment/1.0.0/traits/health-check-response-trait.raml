@@ -1,0 +1,11 @@
+#%RAML 1.0 Trait
+
+responses:  
+  200:
+    description: This will show the health-check of the api.
+    body:
+      application/json:
+        type: !include ../data types/health-check-dataType.raml
+        example: !include ../examples/health-check-example.json
+          
+        

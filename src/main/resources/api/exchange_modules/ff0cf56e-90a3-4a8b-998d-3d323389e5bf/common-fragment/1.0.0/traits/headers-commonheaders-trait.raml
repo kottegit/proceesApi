@@ -1,0 +1,21 @@
+#%RAML 1.0 Trait
+
+headers:
+  Accept-Language:
+    description: This will show the languages this api accepts.
+    type: string
+    required: true
+    enum:
+      - en-US
+      - en-GB
+    example: "en-US"
+  x-abcb-msgid:
+    description: This will show the unique transaction id.
+    type: string
+    required: true
+    minLength: 36
+    maxLength: 36
+    example: "27bc680c-29a3-4768-9fba-e34339ec1230"
+      
+
+  

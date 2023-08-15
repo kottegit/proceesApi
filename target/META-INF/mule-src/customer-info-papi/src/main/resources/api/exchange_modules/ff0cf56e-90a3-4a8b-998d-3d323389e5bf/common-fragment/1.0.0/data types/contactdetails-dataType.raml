@@ -1,0 +1,51 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+  emailAddress:
+    type: string
+    required: true
+    example: "ABOFF@TEST.CO"
+  emailUpdateStatus:
+    type: string
+    required: true
+    example: "S"
+  mobileNumber:
+    type: string
+    required: true
+    example: "85265871079"
+  mobileNumberUpdateStatus:
+    type: string
+    required: true
+    example: "S"
+  address:
+    type: object
+    properties:
+      addrLine1:
+        type: string
+        required: true
+        example:  "FLT B 23/F BLK 2"
+      addrLine2:  
+        type: string
+        required: true
+        example: "LE PRESTIGE MONA LISA"
+      addrLine3:  
+        type: string
+        required: true
+        example: "1 LOHAS PARK ROAD TSE" 
+      addrLine4:
+        type: string
+        required: true
+        example: "UNG KWAN O SAI KUNG HK"
+  address_zh:
+    type: string 
+    required: true
+    example: "LE PRESTIGE MONA LISA"
+  addressUpdateStatus:
+    type: string
+    required: true
+    enum:
+      - S
+      - N
+      - P
+    example: "S"

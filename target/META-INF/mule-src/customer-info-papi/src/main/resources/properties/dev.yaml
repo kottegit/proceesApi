@@ -1,0 +1,25 @@
+apiInstanceId: "18316598" 
+
+http:
+ listener:
+  host: "0.0.0.0"
+  port: "8081"
+  readtimeout: "30000"
+  
+ requester:
+  customer:
+   sapi:
+    host: "customer-info-sapi-31azmi.5sc6y6-2.usa-e2.cloudhub.io"
+    port: ""
+    path-policydetails: "/api/policies"
+    path-policyriders: "/api/policies/riders"
+    path-customercontacts: "/api/customer/contacts"
+   
+  
+ 
+internal:
+ client-id : "![0l3Pp/uNUjEMTHTaK51YDGsnZThvg2C6P3+iWZ1llHR7pxS5z1YqlQ==]"
+ client-secret : "![jFO+d/yMVHxKYScMaiBts36vqdpbB33IEmhYXrNmr0/eqlnAlD5syg==]"      
+        
+ 
+ 

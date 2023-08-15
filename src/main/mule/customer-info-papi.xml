@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    
+    <flow name="customer-info-papi-main">
+        <http:listener config-ref="customer-info-papi-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="customer-info-papi-config" />
+		<error-handler ref="global-apikit-Error_Handler" />
+    </flow>
+	<flow name="customer-info-papi-console">
+        <http:listener config-ref="customer-info-papi-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="customer-info-papi-config" />
+		<error-handler ref="global-apikit-Error_Handler" />
+    </flow>
+    <flow name="get:\healthcheck:customer-info-papi-config">
+        <logger level="INFO" doc:name="Request Logger" doc:id="3dcd73fa-3dd7-4edd-a536-17caf0d31482" message="Request received for Healthcheck API"/>
+		<ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  status: 200,
+  msg: "application is up and running"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<logger level="INFO" doc:name="Response Logger" doc:id="37419a9d-0188-4e81-aea9-d0cc7194563c" message="Response sent for Healthcheck API"/>
+		<error-handler ref="global-flow-Error_Handler" />
+    </flow>
+	<flow name="get:\policies:customer-info-papi-config">
+        <flow-ref doc:name="initialization-Flow-Reference" doc:id="a739af22-f801-44c0-862e-b876a42f4795" name="common-initialization-Sub_Flow"/>
+		<logger level="INFO" doc:name="request-Logger" doc:id="d01a9549-09c7-46fe-b0ab-38f3618d91dd" message='#[%dw 2.0&#10;output application/json indent = false&#10;---&#10;{&#10;	TimeStamp: vars.requesttime,&#10;	transactionId: vars.requesttransactionid,&#10;	AppName: app.name,&#10;	FlowName: flow.name,&#10;	BusinessProcessName: "Customer Contact info",&#10;	Category: "Cstomer",&#10;	OriginatingApplication: "XPAPI",&#10;	DestinationApplication: "SAPI",&#10;	CustomerId: "NA",&#10;	txnState: "START"&#10;	&#10;	&#10;}]'/>
+		<flow-ref doc:name="implementation-Flow Reference" doc:id="702bb6a1-c141-4ecf-9915-935510efb782" name="get-customerinfo-implementationSub_Flow"/>
+		<logger level="INFO" doc:name="response-Logger" doc:id="a2911d49-aa37-4961-89f8-66cf1b069257" message='#[%dw 2.0&#10;output application/json indent = false&#10;---&#10;{&#10;	TimeStamp: vars.requesttime,&#10;	transactionId: vars.requesttransactionid,&#10;	AppName: app.name,&#10;	FlowName: flow.name,&#10;	BusinessProcessName: "Customer Contact info",&#10;	Category: "Cstomer",&#10;	OriginatingApplication: "XPAPI",&#10;	DestinationApplication: "SAPI",&#10;	CustomerId: "NA",&#10;	txnState: "END"&#10;	}]'/>
+		<error-handler ref="global-flow-Error_Handler" />
+    </flow>
+</mule>

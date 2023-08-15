@@ -1,0 +1,36 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+  msg:
+    type: string
+    required: true
+    example: "failed operation"
+  code:
+    type: integer
+    required: true
+    example: 401
+  eventId:
+    type: string
+    required: true
+    minLength: 36
+    maxLength: 36
+    example: "dbfhj-sdbhfbdo8r-yt876t75ty-vbnu76bg"
+  error:
+    type: object
+    properties:
+      type:
+        type: string
+        required: true
+        example: "Un_Authorized"
+      title:
+          type: string
+          required: true
+          example:  "UnAuthorized"
+      details:
+          type: string
+          required: true
+          example: "The Request is not Authorized"
+            
+
+      

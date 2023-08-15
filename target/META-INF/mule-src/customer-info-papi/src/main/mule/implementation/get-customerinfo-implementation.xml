@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="get-customerinfo-implementationSub_Flow" doc:id="a5c43716-db13-4a06-87d8-8339d3792538" >
+		<logger level="INFO" doc:name="Requrest policy details SAPI Logger" doc:id="cba915f4-3afb-4b6c-ab8d-aa5772f104d3" message="#[%dw 2.0
+output application/json indent = false
+---
+{
+	TimeStamp: (now() &gt;&gt; 'IST')[0 to 18],
+	transactionId: vars.requesttransactionid,
+	AppName: app.name,
+	FlowName: flow.name,
+	BusinessProcessName: &quot;Customer Contact info&quot;,
+	Category: &quot;Customer&quot;,
+	OriginatingApplication: &quot;XPAPI&quot;,
+	DestinationApplication: &quot;SAPI&quot;,
+	CustomerId: &quot;NA&quot;,
+	txnState: &quot;REQUEST policy details from SAPI&quot;
+	
+	
+}]" />
+		<http:request method="GET" doc:name="Request to call policy details" doc:id="52b1eca8-2a43-48a6-b83b-316ab3063fe4" config-ref="HTTP_Request_configuration-customerinfo-sapi" path="${http.requester.customer.sapi.path-policydetails}" target="responsepolicydetails">
+			<http:headers><![CDATA[#[output application/json
+---
+{
+	"client-id" : p('secure::internal.client-id'),
+	"client-secret" : p('secure::internal.client-secret'),
+	"x-abcb-msgid" : vars.requesttransactionid,
+	"Accept-Language" : "en-US"
+}]]]></http:headers>
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"mdmId" : vars.requestdata.queryParams.mdmId
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Response policy details SAPI Logger" doc:id="82ca629e-8b20-4e3e-b3ac-ecb98df9866d" message="#[%dw 2.0
+output application/json indent = false
+---
+{
+	TimeStamp: (now() &gt;&gt; 'IST')[0 to 18],
+	transactionId: vars.requesttransactionid,
+	AppName: app.name,
+	FlowName: flow.name,
+	BusinessProcessName: &quot;Customer Contact info&quot;,
+	Category: &quot;Customer&quot;,
+	OriginatingApplication: &quot;XPAPI&quot;,
+	DestinationApplication: &quot;SAPI&quot;,
+	CustomerId: &quot;NA&quot;,
+	txnState: &quot; policy details Response from SAPI&quot;
+	
+	
+}]" />
+		<parallel-foreach doc:name="Parallel For Each" doc:id="eb48cb97-6c81-4e64-a1f9-1b8cb9998029" collection="#[vars.responsepolicydetails]" maxConcurrency="3">
+			<scatter-gather doc:name="Scatter-Gather" doc:id="111a4010-5702-490f-95f0-9fcb58f49b62" >
+				<route >
+					<logger level="INFO" doc:name="Requrest policy rider SAPI Logger" doc:id="c92a294a-ed44-470b-822a-c3028fddf145" message="#[%dw 2.0
+output application/json indent = false
+---
+{
+	TimeStamp: (now() &gt;&gt; 'IST')[0 to 18],
+	transactionId: vars.requesttransactionid,
+	AppName: app.name,
+	FlowName: flow.name,
+	BusinessProcessName: &quot;Customer Contact info&quot;,
+	Category: &quot;Customer&quot;,
+	OriginatingApplication: &quot;XPAPI&quot;,
+	DestinationApplication: &quot;SAPI&quot;,
+	CustomerId: &quot;NA&quot;,
+	txnState: &quot;REQUEST policy details from SAPI&quot;
+	
+	
+}]" />
+					<http:request method="GET" doc:name="Request to call policyrider details" doc:id="eb907987-7c05-4661-b97b-740d71bcba4c" config-ref="HTTP_Request_configuration-customerinfo-sapi" path="${http.requester.customer.sapi.path-policyriders}">
+						<http:headers ><![CDATA[#[output application/json
+---
+{
+	"client-id" : p('secure::internal.client-id'),
+	"client-secret" : p('secure::internal.client-secret'),
+	"x-abcb-msgid" : vars.requesttransactionid,
+	"Accept-Language" : "en-US"
+}]]]></http:headers>
+						<http:query-params ><![CDATA[#[output application/json
+---
+{
+	"policyNumber" : payload.policyNumber
+}]]]></http:query-params>
+					</http:request>
+					<logger level="INFO" doc:name="Response policyrider details SAPI Logger" doc:id="5883970b-ae8e-46c8-ba74-f1a7eeb27538" message="#[%dw 2.0
+output application/json indent = false
+---
+{
+	TimeStamp: (now() &gt;&gt; 'IST')[0 to 18],
+	transactionId: vars.requesttransactionid,
+	AppName: app.name,
+	FlowName: flow.name,
+	BusinessProcessName: &quot;Customer Contact info&quot;,
+	Category: &quot;Customer&quot;,
+	OriginatingApplication: &quot;XPAPI&quot;,
+	DestinationApplication: &quot;SAPI&quot;,
+	CustomerId: &quot;NA&quot;,
+	txnState: &quot; policy details Response from SAPI&quot;
+	
+	
+}]" />
+				</route>
+				<route >
+					<logger level="INFO" doc:name="Requrest customercontacts details SAPI Logger" doc:id="7dc2741a-b8db-44d7-b9e9-dac158ef9bf5" message="#[%dw 2.0
+output application/json indent = false
+---
+{
+	TimeStamp: (now() &gt;&gt; 'IST')[0 to 18],
+	transactionId: vars.requesttransactionid,
+	AppName: app.name,
+	FlowName: flow.name,
+	BusinessProcessName: &quot;Customer Contact info&quot;,
+	Category: &quot;Customer&quot;,
+	OriginatingApplication: &quot;XPAPI&quot;,
+	DestinationApplication: &quot;SAPI&quot;,
+	CustomerId: &quot;NA&quot;,
+	txnState: &quot;REQUEST policy details from SAPI&quot;
+	
+	
+}]" />
+					<http:request method="GET" doc:name="Request to call customer-contacts details" doc:id="2477cf8b-0279-4dc7-a1b6-c78c48987c66" config-ref="HTTP_Request_configuration-customerinfo-sapi" path="${http.requester.customer.sapi.path-customercontacts}">
+						<http:headers><![CDATA[#[output application/json
+---
+{
+	"client-id" : p('secure::internal.client-id'),
+	"client-secret" : p('secure::internal.client-secret'),
+	"x-abcb-msgid" : vars.requesttransactionid,
+	"Accept-Language" : "en-US"
+}]]]></http:headers>
+						<http:query-params><![CDATA[#[output application/json
+---
+{
+	"policyNumber" : payload.policyNumber
+}]]]></http:query-params>
+					</http:request>
+					<logger level="INFO" doc:name="Response customercontacts details SAPI Logger" doc:id="3e93fd67-1aaa-42d8-b8a5-45b70aefabce" message="#[%dw 2.0
+output application/json indent = false
+---
+{
+	TimeStamp: (now() &gt;&gt; 'IST')[0 to 18],
+	transactionId: vars.requesttransactionid,
+	AppName: app.name,
+	FlowName: flow.name,
+	BusinessProcessName: &quot;Customer Contact info&quot;,
+	Category: &quot;Customer&quot;,
+	OriginatingApplication: &quot;XPAPI&quot;,
+	DestinationApplication: &quot;SAPI&quot;,
+	CustomerId: &quot;NA&quot;,
+	txnState: &quot; policy details Response from SAPI&quot;
+	
+	
+}]" />
+				</route>
+			
+			</scatter-gather>
+		</parallel-foreach>
+		<ee:transform doc:name="Transform Message" doc:id="0e6d7e1d-7d4c-4c62-95af-75cd963431d8" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="responsepolicyriderdetails" ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.payload.'0'.payload)]]></ee:set-variable>
+				<ee:set-variable variableName="responsecustomercontactdetails" ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload.payload.'1'.payload)]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="4f72212d-7092-4a7a-a39a-fd341daa19ec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.responsepolicydetails map(item,index)->
+{
+  "mdmId": vars.requestdata.queryParams.mdmId,
+  "policy": {
+    "mdmId": item.mdmId,
+    "ecommFlag": item.ecommFlag ,
+    "eCommStatus": item.eCommStatus,
+    "policyNumber": item.policyNumber,
+    "entityCode": item.entityCode,
+    "planCode": item.planCode,
+    "policyCategory": item.policyCategory,
+    "planDescription": item.planDescription,
+    "policyEffectiveDate": item.policyEffectiveDate,
+    "policyTerminationDate": item.policyTerminationDate,
+    "documentCategory": item.documentCategory,
+    "actualServicingAgentCode": item.actualServicingAgentCode,
+    "wiseGuardProPolicyFlag": item.wiseGuardProPolicyFlag,
+    "policyName": {
+      "en": item.policyNameEN,
+      "zh": item.policyNameZH
+    },
+    "isOwnerInsuredFlag": item.isOwnerInsuredFlag,
+    "insuredLastName": item.insuredLastName,
+    "ownerLastNm": item.ownerLastNm
+  },
+  "policyRiders": vars.responsepolicyriderdetails filter($.policyNumber == item.policyNumber),
+  "suspiciousCode": item.suspiciousCode,
+  "CSCCode": item.CSCCode,
+  "rejectCode": item.rejectCode,
+  "contactDetails": vars.responsecustomercontactdetails filter($.policyNumber == item.policyNumber),
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

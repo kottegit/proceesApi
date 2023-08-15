@@ -1,0 +1,10 @@
+{
+  "msg": "failed operation",
+  "code": 500,
+  "eventId": "dbfhj-sdbhfbdo8r-yt876t75ty-vbnu76bb",
+  "error": {
+    "type": "SERVER_ERROR",
+    "title": "server not found",
+    "details": "The server encountered an unexpected condition which prevent it from fufillung the request"
+  }
+}

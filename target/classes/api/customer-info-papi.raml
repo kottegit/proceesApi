@@ -1,0 +1,63 @@
+#%RAML 1.0
+title: customer-info-papi
+description: This RAML contains all acustomer info xpapi details.
+version: 1.0.0
+baseUri: http://abc.com/{version}
+
+uses:
+  common-library: exchange_modules/ff0cf56e-90a3-4a8b-998d-3d323389e5bf/common-fragment/1.0.0/common-fragment.raml
+
+/policies:
+  get:
+    is:
+      - common-library.featurename
+      - common-library.common-headers
+      - common-library.error-response
+      - common-library.clientid-enforcement
+    responses:
+        200:
+          body:
+            application/json:
+              type: array
+              items:
+                type: object
+                properties:
+                  mdmId:
+                    required: true
+                    type: string|nil
+                    example: "HNM01"
+                  policy:
+                    type: common-library.policy
+                  policyRiders:
+                    type: common-library.policyrider
+                  suspiciousCode:
+                    required: true
+                    type: string|nil
+                    example: "NH01"
+                  CSCCode:
+                    required: true
+                    type: string|nil
+                    example: "NH01"
+                  rejectCode:
+                    required: true
+                    type: string|nil
+                    example: "NH01"
+                  contactDetails:
+                    type: common-library.contactdetails 
+/healthcheck:
+  get:
+    is:
+      - common-library.health-check
+      - common-library.common-headers
+      - common-library.error-response
+      - common-library.clientid-enforcement
+                     
+
+
+
+                          
+                      
+              
+
+  
+    

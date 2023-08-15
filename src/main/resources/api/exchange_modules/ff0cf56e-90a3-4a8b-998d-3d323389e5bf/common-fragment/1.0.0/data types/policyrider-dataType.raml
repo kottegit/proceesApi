@@ -1,0 +1,46 @@
+#%RAML 1.0 DataType
+
+type: array
+items:
+  type: object
+  properties:    
+    policyNumber:
+        required: true
+        type: string
+        example: "64338-098"
+    planCode:
+      required: true
+      type: string
+      example: "HMI10S"
+    policyCategory:
+      required: true
+      type: string
+      example: "GROUP_HEALTH_PRODUCT"
+    planName: 
+          required: true
+          type: !include ../data types/policyname-planname-dataType.raml
+          example: {
+                  "en": "HEALTHPRO MAJOR ILLNESS INSURANCE - 10",
+                  "zh": "康逸嚴重疾病保障 - 10"
+                }         
+    riderPlanEffectiveDate:  
+      required: true
+      type: string
+      example: "20100224"
+    riderPlanTerminationDate:  
+      required: true
+      type: string
+      example: "20100224"   
+    planStatus: 
+      required: true
+      type: string
+      example: "S"        
+    documentCategory:        
+      required: true
+      type: string
+      example: "A-1"
+    hospitlCategory:  
+      required: true
+      type: string
+      example: "H-01"
+    

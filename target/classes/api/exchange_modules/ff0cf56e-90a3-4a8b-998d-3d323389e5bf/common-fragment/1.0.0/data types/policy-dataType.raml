@@ -1,0 +1,78 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+  mdmId:
+    required: true
+    type: integer
+    example: 64338
+  ecommFlag:
+    required: true
+    type: string
+    example: "E"
+  eCommStatus:
+    required: true
+    type: string
+    example: "S"
+  policyNumber:
+    required: true
+    type: string
+    example: "64338-098"
+  entityCode:  
+    required: true
+    type: string
+    example: "LHK"
+  planCode:
+    required: true
+    type: string
+    example: "HMI10S"
+  policyCategory:
+    required: true
+    type: string
+    example: "GROUP_HEALTH_PRODUCT"
+  planDescription:  
+    required: true
+    type: string
+    example: "ABC"
+  policyEffectiveDate:  
+    required: true
+    type: string
+    example: "20100224"
+  policyTerminationDate:  
+    required: true
+    type: string
+    example: "20100224"
+  documentCategory: 
+    required: true
+    type: string
+    example: "AVBE"
+  actualServicingAgentCode:
+    required: true
+    type: string
+    example: "EA01"
+  wiseGuardProPolicyFlag:
+    required: true
+    type: string
+    example: "N"
+  policyName: 
+    required: true
+    type: !include ../data types/policyname-planname-dataType.raml
+    example: {
+						"en": "HEALTHPRO MAJOR ILLNESS INSURANCE - 10",
+						"zh": "康逸嚴重疾病保障 - 10"
+					}
+  isOwnerInsuredFlag:        
+    required: true
+    type: string
+    example: "Y"
+  insuredLastName:  
+    required: true
+    type: string
+    example: "AVGA EIO SGA"
+  ownerLastNm: 
+    required: true
+    type: string
+    example: "AVGA EIO SGA"
+    
+
+

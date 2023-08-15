@@ -1,0 +1,10 @@
+{
+  "msg": "failed operation",
+  "code": 400,
+  "eventId": "dbfhj-sdbhfbdo8r-yt876t75ty-vbnu76bb",
+  "error": {
+    "type": "BAD_REQUEST",
+    "title": "invalid request",
+    "details": "The Request contains invalid data"
+  }
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="common-initialization-Sub_Flow" doc:id="d37d1e32-9ec7-40f0-8cfa-1cb6ff6e8000" >
+		<ee:transform doc:name="Transform Message" doc:id="c9ebf674-da0e-4ebe-a8eb-4eac8bae7869" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="requestdata" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	queryParams: message.attributes.queryParams,
+	uriParams: message.attributes.uriParams,
+	payload: payload,
+	headers: message.attributes.headers
+}
+]]></ee:set-variable>
+				<ee:set-variable variableName="requesttime" ><![CDATA[(now() >> 'IST')[0 to 18]
+]]></ee:set-variable>
+				<ee:set-variable variableName="requesttransactionid" ><![CDATA[attributes.headers.'x-abcb-msgid']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+</mule>
